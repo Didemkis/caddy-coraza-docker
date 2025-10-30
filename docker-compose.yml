@@ -1,0 +1,33 @@
+
+#Aşağıdaki örnek, Caddy’yi Coraza ve ek modüllerle (rate-limit, cache) birlikte çalıştırır, sağlık kontrolü ve log klasörlerini bağlar.
+
+version: "3.9"
+
+services:
+  caddy:
+    build: .
+    container_name: caddy-coraza
+    restart: always
+    command: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./etc/caddy:/etc/caddy
+      - ./var/log/caddy:/var/log/caddy
+      - ./assets:/app/assets
+      - ./certs:/app/certs
+    networks:
+      - caddy_network
+    healthcheck:
+      test: ["CMD", "caddy", "version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  caddy_network:
+    driver: bridge
+
+# Not: CRS (OWASP Core Rule Set) artık imajın içinde geliyor. Host’tan tüm /app klasörünü bağlamıyoruz ki görüntü içindeki CRS dosyaları volume ile ezilmesin.
