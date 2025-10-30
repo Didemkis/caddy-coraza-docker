@@ -4,18 +4,22 @@ Bu repo, Caddy web sunucusunun OWASP Coraza WAF (Core Rule Set ile) entegre biç
 Docker üzerinde çalıştırılması için hazırlanmıştır. Rehber; kurulum, yapılandırma, rate-limit, 
 HTTP/2 upstream, güvenlik loglama ve performans iyileştirmelerini içermektedir.
 
-## 0) Mimari ve Dizin Yapısı
+## Mimari ve Dizin Yapısı
+<details>
+
 .
 ├─ etc/
 │  └─ caddy/
 │     └─ Caddyfile
-├─ assets/                # statik dosyalar (index.html, js, css…)
-├─ certs/                 # test/kurum içi sertifikalar (crt.pem, key.pem)
+├─ assets/
+├─ certs/
 ├─ var/
 │  └─ log/
-│     └─ caddy/           # access.log, coraza-audit.log
+│     └─ caddy/
 ├─ docker-compose.yml
 └─ Dockerfile
+</details> 
+
 
 ## 1) Ön Koşul Komutları (Linux)
 
