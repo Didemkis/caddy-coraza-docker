@@ -64,7 +64,7 @@ Logları İzleme
 tail -f var/log/caddy/access.log
 tail -f var/log/caddy/coraza-audit.log
 ```
-### Güvenlik ve Performans Notları
+## Güvenlik ve Performans Notları
 
 WAF kipleri:
 
@@ -88,7 +88,7 @@ Sertifika Yönetimi: Testte dosya sertifikaları; prod’da ACME ya da kurum iç
 
 İzolasyon: Sadece gerekli portları açın; container kullanıcı/icaplarına göre ek kısıtlama (read-only fs, no-new-privileges) düşünebilirsiniz.
 
-### Sorun Giderme
+## Sorun Giderme
 
 CRS kuralları hiç tetiklenmiyor: order coraza_waf first yoksa en başa alın. DetectOnly’de 403 beklemeyin, audit log’a bakın.
 
@@ -98,7 +98,7 @@ Upstream 502/504: Hedef servis adresi/portu doğru mu? HTTP/2 desteklemiyorsa ve
 
 Sertifika Hatası: Testte curl -k kullanın; tarayıcı için self-signed sertifikayı güvenilir köke ekleyin ya da geçerli sertifika kullanın.
 
-### SSS
+## SSS
 
 “Engellemeyi ne zaman açayım?”
 En az 1-2 hafta DetectOnly loglarını inceleyip false positive’leri (whitelist/kural ayarı) temizledikten sonra.
@@ -109,7 +109,7 @@ key alanında "{remote_host}" yerine "{header.X-User-Id}" gibi kimliğe dayalı 
 “WAF logları nereye gidiyor?”
 Container içinde /var/log/caddy/coraza-audit.log (hostta ./var/log/caddy/…). SIEM ajanıyla toplayın.
 
-### Resmî Dokümantasyon
+## Resmî Dokümantasyon
 
 Caddy Docs: https://caddyserver.com/docs/
 Bu rehber ile Caddy, OWASP Coraza WAF (CRS) ile birlikte Docker üzerinde çalışır duruma gelir; 80/443 üzerinden erişilebilir, WAF audit ve erişim logları hosta yazılır, /api/* istekleri hız sınırlaması ve HTTP/2 upstream ile proxy’lenir, statik varlıklar önbellekten servis edilir.
