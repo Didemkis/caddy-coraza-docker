@@ -64,8 +64,8 @@ Caddyfile
     }
 
     @assets {           # Statik dosya servis işlemi için koşullar
-        protocol http/2
-        method GET
+        protocol http/2  # Statik dosyalar için HTTP/2 protokolü kullanılacak
+        method GET      # Sadece GET isteklerine izin verilir
         path /
         path /index.html
         query ""        # Query string yoksa
@@ -112,3 +112,4 @@ Caddyfile
         }
     }
 }
+
