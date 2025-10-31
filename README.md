@@ -27,46 +27,49 @@ mkdir -p ./etc/caddy ./var/log/caddy ./assets ./certs
 ```
 İsteğe bağlı: test amaçlı self-signed sertifika üretmek için:
 
+```sh
 openssl req -x509 -newkey rsa:2048 -sha256 -days 365 -nodes \
   -keyout ./certs/key.pem -out ./certs/crt.pem \
   -subj "/CN=localhost"
-
+```
 ## 2) docker-compose.yml
 ## 3) Dockerfile
 ## 4) Caddyfile
 ## 5) Build
-
+```sh
 docker compose build
-
+```
 ## 6) Run
-
+```sh
 docker compose up -d
-
+```
 ## 7) Doğrulama Adımları
-
+```sh
 docker compose ps
 docker exec -it caddy-coraza caddy version
-
+```
 HTTPS testleri
-
+```sh
 curl -kI https://localhost/
 curl -kI https://localhost/index.html
-
+```
 Rate-limit kontrolü (örnek)
 
 # 20 saniyede 1123 adetten fazla /api/* GET isteği 403 dönmelidir
+```sh
 ab -n 1500 -c 200 https://localhost/api/ping
-
+```
 WAF tetikleme (örnek zararlı query)
-
+```sh
 curl -k "https://localhost/?q=' OR 1=1--"
+```
 # /var/log/caddy/coraza-audit.log içinde olay görünmelidir
 
 Logları izle
-
+```sh
 tail -f var/log/caddy/access.log
 tail -f var/log/caddy/coraza-audit.log
-
+```
 
 ## 8) Güvenlik ve Performans Notları
 
