@@ -22,9 +22,9 @@ HTTP/2 upstream, güvenlik loglama ve performans iyileştirmelerini içermektedi
 
 
 ## 1) Ön Koşul Komutları (Linux)
-
+```sh
 mkdir -p ./etc/caddy ./var/log/caddy ./assets ./certs
-
+```
 İsteğe bağlı: test amaçlı self-signed sertifika üretmek için:
 
 openssl req -x509 -newkey rsa:2048 -sha256 -days 365 -nodes \
