@@ -1,3 +1,5 @@
+[🇹🇷 Türkçe](#türkçe) | [🇬🇧 English](#english)
+
 # Caddy + Coraza WAF (OWASP CRS) — Docker Kurulum Rehberi
 
 Bu repo, Caddy web sunucusunun OWASP Coraza WAF (Core Rule Set ile) entegre biçimde 
