@@ -1,9 +1,3 @@
-[🇹🇷 Türkçe](#türkçe) | [🇬🇧 English](#english)
-
----
-
-## 🇹🇷 Türkçe
-
 # Caddy + Coraza WAF (OWASP CRS) — Docker Kurulum Rehberi
 
 Bu repo, Caddy web sunucusunun OWASP Coraza WAF (Core Rule Set ile) entegre biçimde 
@@ -120,11 +114,3 @@ Container içinde /var/log/caddy/coraza-audit.log (hostta ./var/log/caddy/…). 
 
 Caddy Docs: https://caddyserver.com/docs/
 Bu rehber ile Caddy, OWASP Coraza WAF (CRS) ile birlikte Docker üzerinde çalışır duruma gelir; 80/443 üzerinden erişilebilir, WAF audit ve erişim logları hosta yazılır, /api/* istekleri hız sınırlaması ve HTTP/2 upstream ile proxy’lenir, statik varlıklar önbellekten servis edilir.
-
-
----
-
-## 🇬🇧 English
-
-aaa
-
