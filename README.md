@@ -56,8 +56,8 @@ curl -k "https://localhost/?q=' OR 1=1--"
 Rate-Limit (Örnek)
 (Sunucuya kısa sürede aşırı istek gönderme testi)
 
-```
 #20 saniyede 1123 adetten fazla /api/* isteğinde 403 beklenir
+```
 ab -n 1500 -c 200 https://localhost/api/ping
 ```
 Logları İzleme
