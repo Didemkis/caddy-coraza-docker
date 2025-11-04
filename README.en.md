@@ -21,7 +21,12 @@ HTTP/2 upstream, security logging, and performance improvements.
 ```
 mkdir -p ./etc/caddy ./var/log/caddy ./assets ./certs
 ```
-
+```
+# Create log files (it is important that they exist, even if they are empty)
+touch ./var/log/caddy/access.log \
+      ./var/log/caddy/coraza-audit.log \
+      ./var/log/caddy/coraza-debug.log
+```
 Optional (if you want to generate a self-signed TLS certificate for the test environment)::
 
 ```
