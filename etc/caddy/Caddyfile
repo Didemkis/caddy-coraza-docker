@@ -35,7 +35,6 @@
 }
  
 http://basvuru.opncyber.com:80 { #acme challenge için zorunlu
-
     @acme {
         path /.well-known/acme-challenge/*
     }
@@ -44,7 +43,6 @@ http://basvuru.opncyber.com:80 { #acme challenge için zorunlu
         root * /var/www/basvuru
         file_server
     }
-
     handle {
         redir https://{host}{uri} permanent
     }
