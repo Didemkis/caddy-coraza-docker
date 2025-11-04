@@ -174,15 +174,10 @@ http://basvuru.opncyber.com:80 { #acme challenge için zorunlu
  
  
     @assets {    #statik dosyalar
-
         protocol http/2
-
         method GET
-
         path /
-
         path /index.html
-
         query "" 
 
     }
@@ -205,7 +200,7 @@ http://basvuru.opncyber.com:80 { #acme challenge için zorunlu
  
     handle_errors {
 
-        @block expression {http.error.status_code} == 403
+        @block expression {http.error.status_code} == 500
 
         handle @block {
 
