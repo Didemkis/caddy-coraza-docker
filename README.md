@@ -22,7 +22,12 @@ HTTP/2 upstream, güvenlik loglama ve performans iyileştirmelerini içermektedi
 ```
 mkdir -p ./etc/caddy ./var/log/caddy ./assets ./certs
 ```
-
+```
+# Log dosyalarını oluştur (boş da olsa mevcut olması önemli)
+touch ./var/log/caddy/access.log \
+      ./var/log/caddy/coraza-audit.log \
+      ./var/log/caddy/coraza-debug.log
+```
 İsteğe bağlı (test ortamı için self-signed TLS sertifikası üretmek istersen)::
 
 ```
