@@ -7,224 +7,125 @@
 :443 {   # Sunucu 443 (HTTPS) portunu dinler
     tls /app/certs/crt.pem /app/certs/key.pem   # TLS sertifikası ve private key (test ortamı için)
 {
-
     acme_ca https://acme.zerossl.com/v2/DV90 #zerossl bağlantısı
-
     email admin@example.com #domain sahibinin mail adresi 
-
     order coraza_waf first # WAF işlemi tüm diğer işlemlerden önce çalışsın
- 
     servers {
 
         listener_wrappers { #sarmalayıcı oluşturulur
-
             proxy_protocol {
-
                 timeout 5s
-
                 allow 192.168.1.18/32
-
             }
-
             tls
-
         }
-
     }
-
-}
- 
+} 
 (smart_rate_limit) {
-
     @not_whitelisted not remote_ip 192.168.1.0/24 10.10.1.0/24 #white liste alınan IPler
-
     handle @not_whitelisted {
-
         rate_limit {
-
             zone {args[0]} { #parametrik tanımlama
-
                 key {remote_host}
-
                 events {args[1]}
-
                 window {args[2]}
-
             }
-
         }
-
     }
-
 }
  
 http://basvuru.opncyber.com:80 { #acme challenge için zorunlu
 
     @acme {
-
         path /.well-known/acme-challenge/*
-
     }
 
     handle @acme {
-
         root * /var/www/basvuru
-
         file_server
-
     }
 
     handle {
-
         redir https://{host}{uri} permanent
-
     }
-
 }
  
 :443 { # Host bilgisi Örn. https://example.com:443
-
     coraza_waf {
-
         directives `
-
             SecRuleEngine On
-
             Include /app/coreruleset/crs-setup.conf
-
             Include /app/coreruleset/rules/*.conf
-
             SecRequestBodyLimit 13107200
-
             SecRequestBodyNoFilesLimit 131072
-
             SecRequestBodyLimitAction Reject
-
             SecRequestBodyAccess On
-
             SecResponseBodyAccess On
-
             SecResponseBodyLimit 524288
-
             SecResponseBodyLimitAction ProcessPartial
-
             SecAuditEngine On
-
             SecAuditLog /var/log/caddy/coraza-audit.log
-
             SecAuditLogParts ABCFHKZ
-
             SecAuditLogType Serial
-
             SecAuditLogFormat JSON
-
             SecAction "id:900110,phase:1,nolog,pass,t:none,setvar:tx.inbound_anomaly_score_threshold=5,setvar:tx.outbound_anomaly_score_threshold=4"
-
             SecAction "id:900000,phase:1,nolog,pass,t:none,setvar:tx.paranoia_level=1"
-
             SecRule REQUEST_HEADERS_NAMES "!@rx ^(?i:(Host|User-Agent|Accept|Accept-Language|Accept-Encoding|\
-
                  Connection|Upgrade-Insecure-Requests|Sec-Fetch-Dest|Sec-Fetch-Mode|\
-
                  Sec-Fetch-Site|Sec-Fetch-User|Priority|TE|Content-Type|Content-Length|Idempotency-Key|\
-
                  Referer|Origin|Cookie|Cache-Control|Sec-Ch-UA|Sec-Ch-UA-Mobile|\
-
                  Access-Control-Request-Method|Access-Control-Request-Headers|sec-gpc|Sec-Ch-UA-Platform|If-Modified-Since|pragma|If-None-Match))$" \
-
                 "id:40002,phase:1,deny,status:403,msg:'Forbidden header'"
-
             SecRule REQUEST_URI "/decrypt.html" "chain,id:5003,phase:1,deny,status:407,msg:'insecure value'"
-
             SecRule ARGS_GET "!@rx ^[a-zA-Z0-9\_:=\/+ ]+$"
-
         `
-
     }
- 
     @apply { #matcher tanımlanır
-
         protocol http/2
-
         method POST
-
         path /api/* #tek tek yazılması tavsiye edilir. Dış dosya ile , ingreess ile veya global değişken ile tanımlanabilir.
-
         header Content-Type application/json
-
         query ""
-
     }
  
     handle @apply { #matcher uygulanır
-
         import smart_rate_limit apply_zone 10 360s # yukarda rate limit için tanımlanan ingresi uygular ve parametrik değerlerini verir
-
         reverse_proxy @apply 192.168.1.24:5000 {
-
             transport http {
-
                 versions 2  
-
             }
-
         }
-
     }
- 
- 
+  
     @assets {    #statik dosyalar
         protocol http/2
         method GET
         path /
         path /index.html
         query "" 
-
     }
  
     handle @assets {
-
         import smart_rate_limit apply_zone 10 360s
-
         root * /app/assets
-
         file_server
-
         header {
-
             Cache-Control "public, max-age=31536000"
-
         }
-
-    }
- 
+    } 
     handle_errors {
-
         @block expression {http.error.status_code} == 500
-
         handle @block {
-
             respond ":)" 403
-
         }
-
     }
-
     handle {
-
         respond ":)" 403
-
     }
-
     log {
-
         output file /var/log/caddy/access.log
-
     }
-
-}
-
- 
+} 
     coraza_waf {  # Coraza WAF aktif ediliyor
         directives `
             SecRuleEngine DetectOnly              # Saldırıları sadece izle, engelleme (test aşamasında)
@@ -309,14 +210,12 @@ http://basvuru.opncyber.com:80 { #acme challenge için zorunlu
             }
         }
     }
-
     handle_errors {     # Genel hata yönetimi
         @block expression {http.error.status_code} == 500   # Sunucu hatası tespit edildiğinde
         handle @block {
             respond "" 403   # 500 yerine sade ve bilgi vermeyen 403 dön
         }
     }
-
     handle {
         respond "" 403  # Yukarıdaki kurallara uymayan tüm istekler otomatik engellenir
     }
@@ -330,6 +229,3 @@ http://basvuru.opncyber.com:80 { #acme challenge için zorunlu
         }
     }
 }
-
-
-
